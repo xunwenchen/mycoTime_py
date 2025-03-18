@@ -8,10 +8,10 @@ library(vegan)
 theme_set(theme_bw())
 
 
-save <- TRUE
+save <- TRUE # set to 'FALSE' if you don't want to save the plots
 
 # load data ----
-data <- read.csv("data/combined_data.csv")
+data <- read.csv("data/combined_data.csv") # replace own data here
 # set level of c('NM', 'AM') for myco as factor
 data$myco <- factor(data$myco, levels = c('NM', 'AM'))
 # set level of c(0, 2, 5, 15) for stress as factor
@@ -50,6 +50,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
        y = "Soil temperature (degree C)",
        color = "") 
   
+
+# Cd = 0 ----
   ggplot(data %>% 
            subset(stress == 0), aes(x = time, y = soil_tem, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -62,7 +64,7 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
          color = "")
   
   
-  
+# Cd = 2 ----
   ggplot(data %>% 
            subset(stress == 2), aes(x = time, y = soil_tem, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -74,6 +76,7 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
          y = "Soil temperature (degree C)",
          color = "")
   
+# Cd = 5 ----
   ggplot(data %>% 
            subset(stress == 5), aes(x = time, y = soil_tem, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -85,6 +88,7 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
          y = "Soil temperature (degree C)",
          color = "")
   
+# Cd = 15 ----
   ggplot(data %>% 
            subset(stress == 15), aes(x = time, y = soil_tem, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -96,7 +100,7 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
          y = "Soil temperature (degree C)",
          color = "")
   
-# do the same for soil moisture but do it different stress levels ----
+# do the same for soil moisture but do it at different stress levels ----
   ggplot(data, aes(x = time, y = soil_moi, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
@@ -206,7 +210,8 @@ p_no2 <-   ggplot(data, aes(x = time, y = NO2_N, color= myco)) +
 p_n <- ggarrange(p_nh4, p_no3, p_no2, p_pH,
                  ncol = 1, nrow = 4,
                  labels = c("A", "B", "C", "D"))
-  
+p_n
+
 if(save){
   ggsave("out/soil_N.jpg", p_n, width = 88*1.5, height = 66*3, units = "mm", dpi = 300)
   ggsave("out/soil_N.pdf", p_n, width = 88*1.5, height = 66*3, units = "mm", dpi = 300)
@@ -226,7 +231,7 @@ if(save){
 
 
   # Pn ----
-  ggplot(data, aes(x = time, y = Pn, color= myco)) +
+p_Pn <- ggplot(data, aes(x = time, y = Pn, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
@@ -237,7 +242,7 @@ if(save){
          color = "")+
     scale_color_manual(values = c("darkgray", "indianred"))
 # Tr ----
-  ggplot(data, aes(x = time, y = Tr, color= myco)) +
+p_Tr <-   ggplot(data, aes(x = time, y = Tr, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
     theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
@@ -248,7 +253,7 @@ if(save){
          color = "")+
     scale_color_manual(values = c("darkgray", "indianred"))
 # GS ----
-ggplot(data, aes(x = time, y = GS, color= myco)) +
+p_GS <- ggplot(data, aes(x = time, y = GS, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
     theme(panel.grid.major = element_blank(), 
@@ -260,7 +265,7 @@ ggplot(data, aes(x = time, y = GS, color= myco)) +
          color = "")+
     scale_color_manual(values = c("darkgray", "indianred"))
 # CI ----
-ggplot(data, aes(x = time, y = CI, color= myco)) +
+p_CI <- ggplot(data, aes(x = time, y = CI, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
     theme(panel.grid.major = element_blank(), 
@@ -272,7 +277,7 @@ ggplot(data, aes(x = time, y = CI, color= myco)) +
          color = "")+
     scale_color_manual(values = c("darkgray", "indianred"))
 # WUE ----
-ggplot(data, aes(x = time, y = WUE, color= myco)) +
+p_WUE <- ggplot(data, aes(x = time, y = WUE, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
     theme(panel.grid.major = element_blank(), 
@@ -285,7 +290,7 @@ ggplot(data, aes(x = time, y = WUE, color= myco)) +
     scale_color_manual(values = c("darkgray", "indianred"))
   
 # Tr_ratio ----
-ggplot(data, aes(x = time, y = Tr_ratio, color= myco)) +
+p_Tr_ratio <- ggplot(data, aes(x = time, y = Tr_ratio, color= myco)) +
     geom_point(alpha = 0.3) +
     # remove gridlines
     theme(panel.grid.major = element_blank(), 
@@ -296,4 +301,13 @@ ggplot(data, aes(x = time, y = Tr_ratio, color= myco)) +
          y = "Tr_ratio",
          color = "")  +
     scale_color_manual(values = c("darkgray", "indianred"))
-  
+# combined plot ----
+p_photo <- ggarrange(p_Pn, p_Tr, p_GS, p_CI, p_WUE, p_Tr_ratio,
+                 ncol = 2, nrow = 3,
+                 labels = c("A", "B", "C", "D", "E", "F"))
+p_photo
+
+if(save){
+  ggsave("out/photosyn.jpg", p_photo, width = 88*3, height = 66*3, units = "mm", dpi = 300)
+  ggsave("out/photosyn.pdf", p_photo, width = 88*3, height = 66*3, units = "mm", dpi = 300)
+}
