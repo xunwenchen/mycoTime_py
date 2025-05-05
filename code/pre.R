@@ -1,12 +1,23 @@
 # load packages ----
+rm(list = ls())
 library(dplyr)
 library(ggplot2)
 library(agricolae)
 library(ggpubr)
 library(vegan)
-# set ggplot theme
-theme_set(theme_bw())
+library(rEDM)
+library(igraph)
+library(quantreg)
 
+
+
+# source own functions if any ----
+source("code/fun.R")
+# set ggplot theme ----
+theme_set(theme_bw())
+# set sequential colors for plotting ----
+two_colors <- c("darkgray", "indianred")
+four_colors <- c("darkgray", "indianred", "lightblue", "lightgreen")
 
 save <- TRUE # set to 'FALSE' if you don't want to save the plots
 
@@ -36,7 +47,8 @@ ggplot(df_t_m, aes(x = time, y = soil_tem, color = myco))+
   labs(title = "Soil temperature over time",
        x = "Time",
        y = "Soil temperature",
-       color = "")
+       color = "")+
+  scale_color_manual(values = two_colors)
 
 
 # plot logistic map of soil temperature ----
@@ -48,7 +60,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
   geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
        y = "Soil temperature (degree C)",
-       color = "") 
+       color = "") +
+  scale_color_manual(values = two_colors)
   
 
 # Cd = 0 ----
@@ -61,7 +74,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil temperature (degree C)",
-         color = "")
+         color = "")+
+  scale_color_manual(values = two_colors)
   
   
 # Cd = 2 ----
@@ -74,7 +88,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil temperature (degree C)",
-         color = "")
+         color = "")+
+  scale_color_manual(values = two_colors)
   
 # Cd = 5 ----
   ggplot(data %>% 
@@ -86,7 +101,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil temperature (degree C)",
-         color = "")
+         color = "")+
+  scale_color_manual(values = two_colors)
   
 # Cd = 15 ----
   ggplot(data %>% 
@@ -98,7 +114,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil temperature (degree C)",
-         color = "")
+         color = "")+
+  scale_color_manual(values = two_colors)
   
 # do the same for soil moisture but do it at different stress levels ----
   ggplot(data, aes(x = time, y = soil_moi, color= myco)) +
@@ -109,7 +126,8 @@ ggplot(data, aes(x = time, y = soil_tem, color= myco)) +
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil moisture (%)",
-         color = "")
+         color = "")+
+  scale_color_manual(values = two_colors)
   
   
 ggplot(data %>% 
@@ -121,7 +139,8 @@ ggplot(data %>%
   geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
        y = "Soil moisture (%)",
-       color = "")
+       color = "")+
+  scale_color_manual(values = two_colors)
   
   ggplot(data %>% 
            subset(stress == 2), aes(x = time, y = soil_moi, color= myco)) +
@@ -132,7 +151,8 @@ ggplot(data %>%
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil moisture (%)",
-         color = "")
+         color = "")+
+    scale_color_manual(values = two_colors)
   
   ggplot(data %>% 
            subset(stress == 5), aes(x = time, y = soil_moi, color= myco)) +
@@ -143,7 +163,8 @@ ggplot(data %>%
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil moisture (%)",
-         color = "")
+         color = "")+
+    scale_color_manual(values = two_colors)
   
   ggplot(data %>% 
            subset(stress == 15), aes(x = time, y = soil_moi, color= myco)) +
@@ -154,7 +175,8 @@ ggplot(data %>%
     geom_smooth(method = "loess", se = T) +
     labs(x = "Time",
          y = "Soil moisture (%)",
-         color = "")
+         color = "")+
+    scale_color_manual(values = two_colors)
   
   
   
@@ -168,7 +190,7 @@ ggplot(data %>%
     labs(x = "Time",
          y = "NH4-N (mg/kg)",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # NO3_N ----
  p_no3 <-  ggplot(data, aes(x = time, y = NO3_N, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -179,7 +201,7 @@ ggplot(data %>%
     labs(x = "Time",
          y = "NO3-N (mg/kg)",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # NO2_N ----
 p_no2 <-   ggplot(data, aes(x = time, y = NO2_N, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -191,7 +213,7 @@ p_no2 <-   ggplot(data, aes(x = time, y = NO2_N, color= myco)) +
          y = "NO2-N (mg/kg)",
          color = "")  +
     ylim(0, 0.8)+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
   
   
   # pH ----
@@ -205,7 +227,7 @@ p_no2 <-   ggplot(data, aes(x = time, y = NO2_N, color= myco)) +
          y = "pH",
          color = "")  +
     ylim(5, 8)+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # combined plot ----
 p_n <- ggarrange(p_nh4, p_no3, p_no2, p_pH,
                  ncol = 1, nrow = 4,
@@ -227,7 +249,7 @@ if(save){
     labs(x = "Time",
          y = "AP (mg/kg)",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 
 
   # Pn ----
@@ -240,7 +262,7 @@ p_Pn <- ggplot(data, aes(x = time, y = Pn, color= myco)) +
     labs(x = "Time",
          y = "Pn",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # Tr ----
 p_Tr <-   ggplot(data, aes(x = time, y = Tr, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -251,7 +273,7 @@ p_Tr <-   ggplot(data, aes(x = time, y = Tr, color= myco)) +
     labs(x = "Time",
          y = "Tr",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # GS ----
 p_GS <- ggplot(data, aes(x = time, y = GS, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -263,7 +285,7 @@ p_GS <- ggplot(data, aes(x = time, y = GS, color= myco)) +
     labs(x = "Time",
          y = "Gs",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # CI ----
 p_CI <- ggplot(data, aes(x = time, y = CI, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -275,7 +297,7 @@ p_CI <- ggplot(data, aes(x = time, y = CI, color= myco)) +
     labs(x = "Time",
          y = "CI",
          color = "")+
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # WUE ----
 p_WUE <- ggplot(data, aes(x = time, y = WUE, color= myco)) +
     geom_point(alpha = 0.3) +
@@ -287,7 +309,7 @@ p_WUE <- ggplot(data, aes(x = time, y = WUE, color= myco)) +
     labs(x = "Time",
          y = "WUE",
          color = "")  +
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
   
 # Tr_ratio ----
 p_Tr_ratio <- ggplot(data, aes(x = time, y = Tr_ratio, color= myco)) +
@@ -300,7 +322,7 @@ p_Tr_ratio <- ggplot(data, aes(x = time, y = Tr_ratio, color= myco)) +
     labs(x = "Time",
          y = "Tr_ratio",
          color = "")  +
-    scale_color_manual(values = c("darkgray", "indianred"))
+    scale_color_manual(values = two_colors)
 # combined plot ----
 p_photo <- ggarrange(p_Pn, p_Tr, p_GS, p_CI, p_WUE, p_Tr_ratio,
                  ncol = 2, nrow = 3,
