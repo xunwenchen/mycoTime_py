@@ -222,7 +222,9 @@ cv.unit <- 0.1                            # use 0.1 for fast test
 alpha.so <- seq(0, 1, cv.unit);            # Sequence of alpha
 sub.da <- 5                                # Divide the computation job into five parts 
 afsp <- eqsplit(1:length(alpha.so),sub.da) # Divide the parameter space based on alpha parameter
-alf <- 5                                   # Run CV in the first parameter subset. we need to change alf=2,3,4, and finally the value of sub.da and re-run the CV several times
+
+# ~~~~~ alf = 1 ----
+alf <- 1                                   # Run CV in the first parameter subset. we need to change alf=2,3,4, and finally the value of sub.da and re-run the CV several times
 
 # do.MDR.CV <- F
 # Cross-validation of MDR analysis    
@@ -252,6 +254,92 @@ if(do.MDR.CV){
 # set alf <- sub.da, then do cv.MDR.demo()
 # then we have sub.da (we set 5 here) newly constructed .csv files in 'out' folder.
 # then we can compile the results together and select the optimal parameters.
+
+# the followings are copied from above but with changed alf (1,2,3,...,sub.da) for easy run
+################################################################################
+################################################################################
+
+# ~~~~~ alf = 2 ----
+alf <- 2  
+if(do.MDR.CV){
+  alpha.s <- alpha.so[afsp[alf,1]:afsp[alf,2]] # Subset parameter pace
+  # Below, we can set 'parall=T' and 'ncore>=1' for faster computation
+  cv.ind <- cv.MDR.demo(ds, ds_tp1, dmatrix.list=dmatrix.train.mvx, 
+                        parall=T, ncore=12, keep_intra=T,alpha.seq=alpha.s)
+  # 12th Gen Intel Core i7-12700H (2.30 GHz) has 14 cores. I use 12 cores here
+  # To avoid overwrite the original files, we save them with different names, 'XXX_NEW'.
+  if(save){
+    write.csv(cv.ind,
+              file.path('out', 
+                        paste(da.name,
+                              '_nin',nin,
+                              '_cvunit',cv.unit,
+                              '_alph',alpha.s[1]*100,
+                              '_cvout_Nmvx_Rallx.csv',sep='')),
+              row.names=F)}
+}
+
+# ~~~~~ alf = 3 ----
+alf <- 3  
+if(do.MDR.CV){
+  alpha.s <- alpha.so[afsp[alf,1]:afsp[alf,2]] # Subset parameter pace
+  # Below, we can set 'parall=T' and 'ncore>=1' for faster computation
+  cv.ind <- cv.MDR.demo(ds, ds_tp1, dmatrix.list=dmatrix.train.mvx, 
+                        parall=T, ncore=12, keep_intra=T,alpha.seq=alpha.s)
+  # 12th Gen Intel Core i7-12700H (2.30 GHz) has 14 cores. I use 12 cores here
+  # To avoid overwrite the original files, we save them with different names, 'XXX_NEW'.
+  if(save){
+    write.csv(cv.ind,
+              file.path('out', 
+                        paste(da.name,
+                              '_nin',nin,
+                              '_cvunit',cv.unit,
+                              '_alph',alpha.s[1]*100,
+                              '_cvout_Nmvx_Rallx.csv',sep='')),
+              row.names=F)}
+}
+
+# ~~~~~ alf = 4 ----
+alf <- 4  
+if(do.MDR.CV){
+  alpha.s <- alpha.so[afsp[alf,1]:afsp[alf,2]] # Subset parameter pace
+  # Below, we can set 'parall=T' and 'ncore>=1' for faster computation
+  cv.ind <- cv.MDR.demo(ds, ds_tp1, dmatrix.list=dmatrix.train.mvx, 
+                        parall=T, ncore=12, keep_intra=T,alpha.seq=alpha.s)
+  # 12th Gen Intel Core i7-12700H (2.30 GHz) has 14 cores. I use 12 cores here
+  # To avoid overwrite the original files, we save them with different names, 'XXX_NEW'.
+  if(save){
+    write.csv(cv.ind,
+              file.path('out', 
+                        paste(da.name,
+                              '_nin',nin,
+                              '_cvunit',cv.unit,
+                              '_alph',alpha.s[1]*100,
+                              '_cvout_Nmvx_Rallx.csv',sep='')),
+              row.names=F)}
+}
+
+# ~~~~~ alf = 5 ----
+alf <- 5  
+if(do.MDR.CV){
+  alpha.s <- alpha.so[afsp[alf,1]:afsp[alf,2]] # Subset parameter pace
+  # Below, we can set 'parall=T' and 'ncore>=1' for faster computation
+  cv.ind <- cv.MDR.demo(ds, ds_tp1, dmatrix.list=dmatrix.train.mvx, 
+                        parall=T, ncore=12, keep_intra=T,alpha.seq=alpha.s)
+  # 12th Gen Intel Core i7-12700H (2.30 GHz) has 14 cores. I use 12 cores here
+  # To avoid overwrite the original files, we save them with different names, 'XXX_NEW'.
+  if(save){
+    write.csv(cv.ind,
+              file.path('out', 
+                        paste(da.name,
+                              '_nin',nin,
+                              '_cvunit',cv.unit,
+                              '_alph',alpha.s[1]*100,
+                              '_cvout_Nmvx_Rallx.csv',sep='')),
+              row.names=F)}
+}
+################################################################################
+################################################################################
 
 ################################################################################
 # Compiled the CV results tested under different parts of parameter space
