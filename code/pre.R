@@ -26,7 +26,7 @@ four_colors <- c("darkgray", "indianred", "lightblue", "lightgreen")
 
 # The following lines switch on or off whether save/do the analyses or not.
 # Set all to TRUE if run for the first time.
-save <- F # set to 'FALSE' if you don't want to save the plots
+save <- T # set to 'FALSE' if you don't want to save the plots
 do.CCM <- T           # set if do CCM
 do.multiview <- T     # set if do multiview
 do.MDR.CV <- T        # set if do MDR CV
