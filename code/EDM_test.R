@@ -141,6 +141,7 @@ ds.all <- rbind(ds,ds.test)
 dim(ds.all) # 49 rows and 6 columns. Since we need to have lagged dataset, number of time steps of ds.all is 49, although ndo = 50.
 
 # Finding optimal embedding dimension (Ed) and nonlinearity parameter ----
+# Note that this is not a cross-validation (CV). CV is using in-sample data to forecast out-sample data then check with real out-sample data. Here is to explore Ed and nonlinearity. CV will be later.
 #############################################################
 # Find the optimal embedding dimension & nonlinearity parameter for each variable 
 # based on univariate simplex projection and S-map, respectively
@@ -151,7 +152,8 @@ cri <- 'rmse' # model selection
 Ed <- NULL
 forecast_skill_simplex <- NULL
 for(i in 1:ncol(ds)){
-  spx.i <- simplex(ds[,i],E=2:Emax)
+  spx.i <- simplex(ds[,i], E=2:Emax) 
+  # not a CV, so lib and pred is not set
   Ed <- c(Ed,spx.i[which.min(spx.i[,cri])[1],'E'])
   forecast_skill_simplex <- c(forecast_skill_simplex,spx.i[which.min(spx.i[,cri])[1],'rho'])
 }
@@ -163,6 +165,7 @@ forecast_skill_simplex # Forecast skills for each variable based on simplex proj
 # Find causal variables by CCM analysis for multiview embedding
 # Warning: It is time consuming for calculating the causation for each node
 # CCM causality test for all node pairs 
+# Note that ccm() without setting lib and pred is useful for seeing if rho increase with lib size, whether this is stable with diff Ed; useful for checking nonlinear coupling; useful for choosing parameters (Ed and lib size to see convergence) for formal analysis.
 # do.CCM <- F 
 if(do.CCM){ 
   ccm.out <- ccm.fast.demo(ds,Epair=T,cri=cri,Emax=Emax)
@@ -388,7 +391,7 @@ if(do.MDR){
   nr.out <- smap.demo[['nr.out']];
   # To avoid overwrite the original files, we save them with different names, 'XXX_NEW'.
   if(save){
-    write.csv(nr.out,file.path('out', paste(da.name,'_nin',nin,'_cvunit',cv.unit,'_',ptype,'_nrout_Nmvx_Rallx <- _NEW.csv',sep='')),row.names=F)
+    write.csv(nr.out,file.path('out', paste(da.name,'_nin',nin,'_cvunit',cv.unit,'_',ptype,'_nrout_Nmvx_Rallx_demo_NEW.csv',sep='')),row.names=F)
     # Save interaction Jacobian matrices at all time points
     write.csv(smap.demo[['jcof']],file.path('out', paste(da.name,'_nin',nin,'_cvunit',cv.unit,'_',ptype,'_jcof_Nmvx_Rallx_demo_NEW.csv',sep='')),row.names=F)
   }
