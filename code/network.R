@@ -1,9 +1,12 @@
 # using the jcof dataset, we can plot network for each time
 
-net.df <- smap.demo[['jcof']]
+net.df <- read_csv("out/model1024_0_0_0_nin48_cvunit0.1_aenet_jcof_Nmvx_Rallx_demo_NEW.csv")
+
+
+
 # Time 1 network ----
 # take time = 1, Insample = 1, and V1-V6
-net1 <- subset(data, time == 1 & Insample == 1)
+net1 <- subset(net.df, time == 1 & Insample == 1)
 net1_v1_6 <- net1[, c("V1", "V2", "V3", "V4", "V5", "V6")]
 # Convert to matrix
 net1_m <- as.matrix(net1_v1_6)

@@ -11,7 +11,7 @@ rm(list = ls())
 
 my_packages <- c("dplyr", "ggplot2", "agricolae", "ggpubr", "vegan", "rEDM", 
                "igraph", "quantreg", "doParallel", "parallel", "foreach", 
-               "Kendall", "MASS", "glmnet")
+               "Kendall", "MASS", "glmnet", 'readr')
 lapply(my_packages, require, character.only = TRUE)
 
 # source own functions if any ----
@@ -26,7 +26,9 @@ four_colors <- c("darkgray", "indianred", "lightblue", "lightgreen")
 
 # The following lines switch on or off whether save/do the analyses or not.
 # Set all to TRUE if run for the first time.
-save <- T # set to 'FALSE' if you don't want to save the plots
-do.CCM <- T           # set if do CCM
-do.multiview <- T     # set if do multiview
-do.MDR.CV <- T        # set if do MDR CV
+save <- F # set to 'FALSE' if you don't want to save the plots
+do.CCM <- F           # set if do CCM
+do.multiview <- F     # set if do multiview
+do.MDR <- F        # set if do MDR
+do.MDR.CV <- F        # set if do MDR CV
+
